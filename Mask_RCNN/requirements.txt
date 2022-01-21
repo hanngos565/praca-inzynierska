@@ -1,0 +1,15 @@
+opencv-python
+numpy
+scipy==1.1.0
+Pillow
+cython
+scikit-image
+matplotlib
+pandas
+flask
+IPython[all]
+pycocotools
+tensorflow==1.6.0
+h5py==2.10.0
+pydot_ng
+keras==2.1.5

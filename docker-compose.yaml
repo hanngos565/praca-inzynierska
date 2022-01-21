@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  redis:
+    image: "hanngos/redis:0.1"
+    container_name: "redis"
+  client:
+    image: "hanngos/client:0.1"
+    container_name: "client"
+    restart: "always"
+    depends_on:
+        - "server"
+    ports:
+      - "3000:3000"
+  server:
+    image: "hanngos/server:0.1"
+    container_name: "server"
+    restart: "always"
+    depends_on:
+        - "redis"
+    ports:
+      - "8081:8081"
+  algorithm:
+    image: "hanngos/mask-rcnn:0.1"
+    container_name: "algorithm"
+    restart: "always"
