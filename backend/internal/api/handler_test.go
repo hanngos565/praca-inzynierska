@@ -48,7 +48,7 @@ func TestHandler_AddImage(t *testing.T) {
 		statusCode       int
 	}{
 		{
-			testName:     "should return error with status code 404 when url is wrong",
+			testName:     "should return 404 when url is wrong",
 			requestURL:   "/v1/images/wrong",
 			bodyContains: "404 not found",
 			statusCode:   http.StatusNotFound,
@@ -69,7 +69,7 @@ func TestHandler_AddImage(t *testing.T) {
 			statusCode:   http.StatusBadRequest,
 		},
 		{
-			testName:      "should return error with status code 500 when database does not respond",
+			testName:      "should return 500 when database does not respond",
 			requestURL:    "/v1/images",
 			body:          bytes.NewBuffer(jsonData),
 			contentType:   "application/json",
@@ -78,29 +78,18 @@ func TestHandler_AddImage(t *testing.T) {
 			bodyContains:  "database not respond error",
 			statusCode:    http.StatusInternalServerError,
 		},
-		//{
-		//	testName:         "should return 200 when there is no `images` in database",
-		//	requestURL:       "/v1/images",
-		//	body:             bytes.NewBuffer(jsonData),
-		//	contentType:      "application/json",
-		//	getError:         errors.New("key images does not exist"),
-		//	insertData:       string(jsonNewImages),
-		//	assertNoOfGet:    1,
-		//	assertNoOfInsert: 1,
-		//	statusCode:       http.StatusOK,
-		//},
-		//{
-		//	testName:      "should return error with status code 500 when there is no `images` in database",
-		//	requestURL:    "/v1/images",
-		//	body:          bytes.NewBuffer(jsonData),
-		//	contentType:   "application/json",
-		//	getError:      errors.New("key images does not exist"),
-		//	assertNoOfGet: 1,
-		//	bodyContains:  "key images does not exist",
-		//	statusCode:    http.StatusInternalServerError,
-		//},
 		{
-			testName:      "should return error with status code 500 when `images` have no value assigned",
+			testName:      "should return 500 when there is no `images` in database",
+			requestURL:    "/v1/images",
+			body:          bytes.NewBuffer(jsonData),
+			contentType:   "application/json",
+			getError:      errors.New("key images does not exist"),
+			assertNoOfGet: 1,
+			bodyContains:  "key images does not exist",
+			statusCode:    http.StatusInternalServerError,
+		},
+		{
+			testName:      "should return 500 when `images` have no value assigned",
 			requestURL:    "/v1/images",
 			body:          bytes.NewBuffer(jsonData),
 			contentType:   "application/json",
@@ -111,7 +100,7 @@ func TestHandler_AddImage(t *testing.T) {
 			statusCode:    http.StatusInternalServerError,
 		},
 		{
-			testName:      "should return error with status code 500 when `images` are not in json format",
+			testName:      "should return 500 when `images` are not in json format",
 			requestURL:    "/v1/images",
 			body:          bytes.NewBuffer(jsonData),
 			contentType:   "application/json",
@@ -121,7 +110,7 @@ func TestHandler_AddImage(t *testing.T) {
 			statusCode:    http.StatusInternalServerError,
 		},
 		{
-			testName:         "should return error with status code 500 when failed to insert `images` to database",
+			testName:         "should return 500 when failed to insert `images` to database",
 			requestURL:       "/v1/images",
 			body:             bytes.NewBuffer(jsonData),
 			contentType:      "application/json",
@@ -134,7 +123,7 @@ func TestHandler_AddImage(t *testing.T) {
 			statusCode:       http.StatusInternalServerError,
 		},
 		{
-			testName:         "should return status code 200 when images where take from database correctly",
+			testName:         "should return 200 when images where take from database correctly",
 			requestURL:       "/v1/images",
 			body:             bytes.NewBuffer(jsonData),
 			contentType:      "application/json",
@@ -184,39 +173,30 @@ func TestHandler_GetImages(t *testing.T) {
 		statusCode    int
 	}{
 		{
-			testName:      "should return error with status code 404 when url is wrong",
+			testName:      "should return 404 when url is wrong",
 			requestURL:    "/v1/images/wrong",
 			assertNoOfGet: 0,
 			bodyContains:  "404 not found",
 			statusCode:    http.StatusNotFound,
 		},
 		{
-			testName:      "should return error with status code 500 when database does not respond",
+			testName:      "should return 500 when database does not respond",
 			requestURL:    "/v1/images",
 			getError:      errors.New("database not respond error"),
 			assertNoOfGet: 1,
 			bodyContains:  "database not respond error",
 			statusCode:    http.StatusInternalServerError,
 		},
-		//{
-		//	testName:      "should return error with status code 500 when there is no `images` in database",
-		//	requestURL:    "/v1/images",
-		//	getError:      errors.New("key images does not exist"),
-		//	assertNoOfGet: 1,
-		//	bodyContains:  "key images does not exist",
-		//	statusCode:    http.StatusInternalServerError,
-		//},
 		{
-			testName:      "should return error with status code 500 when `images` have no value assigned",
+			testName:      "should return 500 when there is no `images` in database",
 			requestURL:    "/v1/images",
-			getReturned:   "",
-			getError:      errors.New("for key images value is empty"),
+			getError:      errors.New("key does not exist"),
 			assertNoOfGet: 1,
-			bodyContains:  "for key images value is empty",
+			bodyContains:  "key does not exist",
 			statusCode:    http.StatusInternalServerError,
 		},
 		{
-			testName:      "should return error with status code 500 when `images` are not in json format",
+			testName:      "should return 500 when `images` are not in json format",
 			requestURL:    "/v1/images",
 			getReturned:   "not json",
 			assertNoOfGet: 1,
@@ -224,7 +204,7 @@ func TestHandler_GetImages(t *testing.T) {
 			statusCode:    http.StatusInternalServerError,
 		},
 		{
-			testName:      "should return status code 200 when images where take from database correctly",
+			testName:      "should return 200 when images where take from database correctly",
 			requestURL:    "/v1/images",
 			getReturned:   string(jsonImg),
 			assertNoOfGet: 1,
@@ -275,13 +255,13 @@ func TestHandler_GetModels(t *testing.T) {
 		statusCode    int
 	}{
 		{
-			testName:     "should return error with status code 404 when url is wrong",
+			testName:     "should return 404 when url is wrong",
 			requestURL:   "/v1/models/{id}/wrong",
 			bodyContains: "404 not found",
 			statusCode:   http.StatusNotFound,
 		},
 		{
-			testName:      "should return error with status code 500 when database does not respond",
+			testName:      "should return 500 when database does not respond",
 			requestURL:    "/v1/models/" + id,
 			getError:      errors.New("database not respond error"),
 			assertNoOfGet: 1,
@@ -289,7 +269,7 @@ func TestHandler_GetModels(t *testing.T) {
 			statusCode:    http.StatusInternalServerError,
 		},
 		{
-			testName:      "should return error with status code 500 when there is no `models` in database",
+			testName:      "should return 500 when there is no `models` in database",
 			requestURL:    "/v1/models/" + id,
 			getError:      errors.New("key models does not exist"),
 			assertNoOfGet: 1,
@@ -297,16 +277,7 @@ func TestHandler_GetModels(t *testing.T) {
 			statusCode:    http.StatusInternalServerError,
 		},
 		{
-			testName:      "should return error with status code 500 when `models` have no value assigned",
-			requestURL:    "/v1/models/" + id,
-			getReturned:   "",
-			getError:      errors.New("for key models value is empty"),
-			assertNoOfGet: 1,
-			bodyContains:  "for key models value is empty",
-			statusCode:    http.StatusInternalServerError,
-		},
-		{
-			testName:      "should return error with status code 500 when `models` are not in json format",
+			testName:      "should return 500 when `models` are not in json format",
 			requestURL:    "/v1/models/" + id,
 			getReturned:   "not json",
 			assertNoOfGet: 1,
@@ -314,7 +285,7 @@ func TestHandler_GetModels(t *testing.T) {
 			statusCode:    http.StatusInternalServerError,
 		},
 		{
-			testName:      "should return status code 200 when images where take from database correctly",
+			testName:      "should return 200 when images where take from database correctly",
 			requestURL:    "/v1/models/" + id,
 			getReturned:   string(jsonAllModels),
 			assertNoOfGet: 1,
@@ -385,7 +356,7 @@ func TestHandler_UploadModel(t *testing.T) {
 		statusCode            int
 	}{
 		{
-			testName:     "should return error with status code 404 when url is wrong",
+			testName:     "should return 404 when url is wrong",
 			requestURL:   "/v1/models/wrong",
 			bodyContains: "404 not found",
 			statusCode:   http.StatusNotFound,
@@ -426,7 +397,7 @@ func TestHandler_UploadModel(t *testing.T) {
 			statusCode:            http.StatusInternalServerError,
 		},
 		{
-			testName:              "should return error with status code 500 when database does not respond",
+			testName:              "should return 500 when database does not respond",
 			requestURL:            "/v1/models",
 			contentType:           writer.FormDataContentType(),
 			formModel:             "model",
@@ -451,7 +422,7 @@ func TestHandler_UploadModel(t *testing.T) {
 			statusCode:            http.StatusInternalServerError,
 		},
 		{
-			testName:              "should return status code 500 when failed to insert to db",
+			testName:              "should return 500 when failed to insert to db",
 			requestURL:            "/v1/models",
 			contentType:           writer.FormDataContentType(),
 			formModel:             "model",
@@ -467,7 +438,7 @@ func TestHandler_UploadModel(t *testing.T) {
 			statusCode:            http.StatusInternalServerError,
 		},
 		{
-			testName:              "should return status code 200 when model was correctly uploaded",
+			testName:              "should return 200 when model was correctly uploaded",
 			requestURL:            "/v1/models",
 			contentType:           writer.FormDataContentType(),
 			formModel:             "model",

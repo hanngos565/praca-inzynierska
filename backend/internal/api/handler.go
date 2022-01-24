@@ -38,11 +38,9 @@ type Handler struct {
 	postSimulationResultsEndpoint string
 	putSimulationResultsEndpoint  string
 	getSimulationResultsEndpoint  string
-	configModels                  string
-	configImages                  string
 }
 
-func (h Handler) EndpointInitialize(mux *mux.Router) {
+func (h Handler) InitializeEndpoints(mux *mux.Router) {
 	mux.HandleFunc(h.getImagesEndpoint, h.GetImages).Methods("GET")
 	mux.HandleFunc(h.putImageEndpoint, h.AddImage).Methods("PUT")
 	mux.HandleFunc(h.getModelsEndpoint, h.GetModels).Methods("GET")
@@ -73,7 +71,7 @@ func (h Handler) Config() error {
 	}
 
 	if _, err := h.iDatabase.Get("models"); err != nil {
-		if err.Error() != "key models does not exist" {
+		if err.Error() != "key does not exist" {
 			return err
 		}
 	}
@@ -86,7 +84,7 @@ func (h Handler) Config() error {
 		return err
 	}
 	if _, err = h.iDatabase.Get("images"); err != nil {
-		if err.Error() != "key images does not exist" {
+		if err.Error() != "key does not exist" {
 			return err
 		}
 	}

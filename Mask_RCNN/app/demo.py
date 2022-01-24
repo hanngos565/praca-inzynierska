@@ -3,6 +3,7 @@ import threading
 import coco
 import model as modellib
 from keras import backend as K
+from update import update
 
 def fire_and_forget(f):
     def wrapped(*args, **kwargs):

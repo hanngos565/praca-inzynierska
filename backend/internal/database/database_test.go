@@ -9,7 +9,7 @@ import (
 )
 
 func TestDatabase_Connect(t *testing.T) {
-	t.Run("should return nil when connection is already initialized", func(t *testing.T) {
+	t.Run("should return nil when there is already a connection to database", func(t *testing.T) {
 		//given
 		client, _ := redismock.NewClientMock()
 		d := Database{address: "localhost:8081", password: "", connection: client, ctx: context.Background()}
@@ -20,7 +20,7 @@ func TestDatabase_Connect(t *testing.T) {
 		//then
 		assert.NoError(t, err)
 	})
-	t.Run("should return error when trying to ping database", func(t *testing.T) {
+	t.Run("should return error when couldn't ping database", func(t *testing.T) {
 
 		//given
 		d := Database{address: "localhost:8081", password: "", ctx: context.Background()}
@@ -36,7 +36,7 @@ func TestDatabase_Connect(t *testing.T) {
 
 func TestDatabase_Set(t *testing.T) {
 	const key, value = "key", "value"
-	t.Run("should return error when connection is not initialized", func(t *testing.T) {
+	t.Run("should return error when there is no connection to database", func(t *testing.T) {
 		//given
 		_, clientMock := redismock.NewClientMock()
 		clientMock.ClearExpect()
@@ -47,12 +47,12 @@ func TestDatabase_Set(t *testing.T) {
 		err := database.Set(key, value)
 
 		//then
-		assert.Error(t, err, errors.New("connection not initialized"))
+		assert.Error(t, err, errors.New("no connection to database"))
 		if err := clientMock.ExpectationsWereMet(); err != nil {
 			t.Error(err)
 		}
 	})
-	t.Run("should return error when error occurred in adding value to database", func(t *testing.T) {
+	t.Run("should return error when couldn't set value in database", func(t *testing.T) {
 		//given
 		client, clientMock := redismock.NewClientMock()
 		clientMock.ClearExpect()
@@ -69,7 +69,7 @@ func TestDatabase_Set(t *testing.T) {
 			t.Error(err)
 		}
 	})
-	t.Run("should insert data correctly to database with no errors", func(t *testing.T) {
+	t.Run("should return no error when insert data successfully to database", func(t *testing.T) {
 
 		//given
 		client, clientMock := redismock.NewClientMock()
@@ -91,7 +91,7 @@ func TestDatabase_Set(t *testing.T) {
 
 func TestDatabase_Get(t *testing.T) {
 	const key = "key"
-	t.Run("should return error when connection is not initialized", func(t *testing.T) {
+	t.Run("should return error when there is no connection to database", func(t *testing.T) {
 		//given
 		_, clientMock := redismock.NewClientMock()
 		clientMock.ClearExpect()
@@ -102,12 +102,12 @@ func TestDatabase_Get(t *testing.T) {
 		_, err := database.Get(key)
 
 		//then
-		assert.Error(t, err, errors.New("connection not initialized"))
+		assert.Error(t, err, errors.New("no connection to database"))
 		if err := clientMock.ExpectationsWereMet(); err != nil {
 			t.Error(err)
 		}
 	})
-	t.Run("should return error when key doesn't exists in database", func(t *testing.T) {
+	t.Run("should return error when key does not exist in database", func(t *testing.T) {
 		//given
 		client, clientMock := redismock.NewClientMock()
 		clientMock.ClearExpect()
@@ -119,12 +119,12 @@ func TestDatabase_Get(t *testing.T) {
 		_, err := database.Get(key)
 
 		//then
-		assert.Equal(t, "key "+key+" does not exist", err.Error())
+		assert.Equal(t, "key does not exist", err.Error())
 		if err := clientMock.ExpectationsWereMet(); err != nil {
 			t.Error(err)
 		}
 	})
-	t.Run("should return error when error occurred in getting value from database", func(t *testing.T) {
+	t.Run("should return error when couldn't get data from database", func(t *testing.T) {
 
 		//given
 		client, clientMock := redismock.NewClientMock()
@@ -137,38 +137,19 @@ func TestDatabase_Get(t *testing.T) {
 		_, err := database.Get(key)
 
 		//then
-		assert.Contains(t, err.Error(), "error occurred in getting ")
+		assert.Error(t, err)
 		if err := clientMock.ExpectationsWereMet(); err != nil {
 			t.Error(err)
 		}
 	})
-	t.Run("should return error when key exists but value is empty", func(t *testing.T) {
-
+	t.Run("should return no error when successfully got data from database", func(t *testing.T) {
 		//given
 		client, clientMock := redismock.NewClientMock()
 		clientMock.ClearExpect()
 		clientMock.MatchExpectationsInOrder(true)
 		database := Database{connection: client}
-		clientMock.ExpectGet(key).SetVal("")
-
-		//when
-		val, err := database.Get(key)
-
-		//then
-		assert.Equal(t, "", val)
-		assert.Equal(t, "for key "+key+" value is empty", err.Error())
-		if err := clientMock.ExpectationsWereMet(); err != nil {
-			t.Error(err)
-		}
-	})
-	t.Run("should return no error when data is got correctly from database", func(t *testing.T) {
-		//given
-		client, clientMock := redismock.NewClientMock()
-		clientMock.ClearExpect()
-		clientMock.MatchExpectationsInOrder(true)
-		database := Database{connection: client}
-		value := "value"
-		clientMock.ExpectGet(key).SetVal(value)
+		val := "val"
+		clientMock.ExpectGet(key).SetVal(val)
 
 		//when
 		_, err := database.Get(key)
@@ -182,7 +163,7 @@ func TestDatabase_Get(t *testing.T) {
 }
 
 func TestDatabase_Keys(t *testing.T) {
-	t.Run("should return error when connection is not initialized", func(t *testing.T) {
+	t.Run("should return error when there is no connection to database", func(t *testing.T) {
 		//given
 		_, clientMock := redismock.NewClientMock()
 		clientMock.ClearExpect()
@@ -193,12 +174,12 @@ func TestDatabase_Keys(t *testing.T) {
 		_, err := database.Keys("*")
 
 		//then
-		assert.Error(t, err, errors.New("connection not initialized"))
+		assert.Error(t, err, errors.New("no connection to database"))
 		if err := clientMock.ExpectationsWereMet(); err != nil {
 			t.Error(err)
 		}
 	})
-	t.Run("should return error when error occurred in getting keys from database", func(t *testing.T) {
+	t.Run("should return error when couldn't get keys from database", func(t *testing.T) {
 		//given
 		client, clientMock := redismock.NewClientMock()
 		clientMock.ClearExpect()
@@ -217,30 +198,13 @@ func TestDatabase_Keys(t *testing.T) {
 			t.Error(err)
 		}
 	})
-	t.Run("should return no error when all keys have been got from database", func(t *testing.T) {
+	t.Run("should return no error when successfully got keys from database", func(t *testing.T) {
 		//given
 		client, clientMock := redismock.NewClientMock()
 		clientMock.ClearExpect()
 		clientMock.MatchExpectationsInOrder(false)
 		database := Database{connection: client}
-		clientMock.ExpectKeys("*").SetVal([]string{"1", "2", "3"})
-
-		//when
-		_, err := database.Keys("*")
-
-		//then
-		assert.NoError(t, err)
-		if err := clientMock.ExpectationsWereMet(); err != nil {
-			t.Error(err)
-		}
-	})
-	t.Run("should return no error when database is empty", func(t *testing.T) {
-		//given
-		client, clientMock := redismock.NewClientMock()
-		clientMock.ClearExpect()
-		clientMock.MatchExpectationsInOrder(false)
-		database := Database{connection: client}
-		clientMock.ExpectKeys("*").SetVal([]string{})
+		clientMock.ExpectKeys("*").SetVal([]string{"models", "images", "results"})
 
 		//when
 		_, err := database.Keys("*")

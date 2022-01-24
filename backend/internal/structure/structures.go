@@ -27,9 +27,3 @@ type Results struct {
 	TimeStamp string `json:"timeStamp"`
 	Status    string `json:"status"`
 }
-
-type DemoResult struct {
-	Names  []string  `json:"names"`
-	Scores []float64 `json:"scores"`
-	BBox   [][]int64 `json:"bbox"`
-}

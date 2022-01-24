@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="034a07e5-79be-40bb-ab87-2143effa5392" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/update.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/cmd/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/internal/algorithm/algorithm_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/internal/algorithm/algorithm_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/internal/api/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/internal/api/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/internal/api/handler_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/internal/api/handler_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/internal/database/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/internal/database/database.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/internal/database/database_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/internal/database/database_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/internal/structure/structures.go" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/internal/structure/structures.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/uml.puml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +24,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -28,6 +35,7 @@
     </file-type-list>
   </component>
   <component name="ProjectId" id="22y2WylzlM6VEatuukNrFpBff61" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -35,7 +43,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">

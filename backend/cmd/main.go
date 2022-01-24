@@ -10,10 +10,10 @@ import (
 	"net/http"
 )
 
-func initAPIHandler() (api.Handler, error) {
+func initializeHandler() (api.Handler, error) {
 	log.Print("Started!")
 
-	database := db.NewDatabaseConnection("redis:6379", "")
+	database := db.NewDBConnection("redis:6379", "")
 	err := database.Connect()
 	if err != nil {
 		return api.Handler{}, err
@@ -32,12 +32,12 @@ func initAPIHandler() (api.Handler, error) {
 func main() {
 	router := mux.NewRouter()
 
-	apiHandler, err := initAPIHandler()
+	apiHandler, err := initializeHandler()
 	if err != nil {
-		log.Print("couldn't connect to database")
+		log.Print(err)
 		return
 	}
-	apiHandler.EndpointInitialize(router)
+	apiHandler.InitializeEndpoints(router)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},

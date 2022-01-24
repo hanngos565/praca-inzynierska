@@ -14,7 +14,7 @@ type Database struct {
 	ctx        context.Context
 }
 
-func NewDatabaseConnection(address, password string) Database {
+func NewDBConnection(address, password string) Database {
 	return Database{
 		address:  address,
 		password: password,
@@ -42,7 +42,7 @@ func (d *Database) Connect() error {
 
 func (d Database) Set(key string, value string) error {
 	if d.connection == nil {
-		return errors.New("connection not initialized")
+		return errors.New("no connection to database")
 	}
 	_, err := d.connection.Set(d.ctx, key, value, 0).Result()
 	return err
@@ -50,25 +50,21 @@ func (d Database) Set(key string, value string) error {
 
 func (d Database) Get(key string) (interface{}, error) {
 	if d.connection == nil {
-		return nil, errors.New("connection not initialized")
+		return nil, errors.New("no connection to database")
 	}
 
 	val, err := d.connection.Get(d.ctx, key).Result()
 
 	switch {
 	case err == redis.Nil:
-		err = errors.New("key " + key + " does not exist")
-	case err != nil:
-		err = errors.Wrap(err, "error occurred in getting data from db")
-	case val == "":
-		err = errors.New("for key " + key + " value is empty")
+		err = errors.New("key does not exist")
 	}
 	return val, err
 }
 
 func (d Database) Keys(pattern string) ([]string, error) {
 	if d.connection == nil {
-		return nil, errors.New("connection not initialized")
+		return nil, errors.New("no connection to database")
 	}
 
 	keys, err := d.connection.Keys(d.ctx, pattern).Result()
