@@ -46,4 +46,4 @@ Kontener z algorytmem zawiera:
 
 Dodatkowo symulacje muszą być uruchamiane ASYNCHRONICZNIE.
 
-Przykładowa implementacja powyższych wymagań znajduje się w folderze `Mask-RCNN`
+Przykładowa implementacja powyższych wymagań znajduje się w folderze [`Mask-RCNN`](https://github.com/hanngos565/praca-inzynierska/tree/main/Mask_RCNN)
